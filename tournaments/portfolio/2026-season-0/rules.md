@@ -126,7 +126,7 @@ Five frontier large language models compete in Season 0:
 | Model | Maker | Version | Access surface | Settings |
 |---|---|---|---|---|
 | Claude | Anthropic | Opus 4.7 | claude.ai (Max plan) | Research + Web search enabled |
-| GPT | OpenAI | 5.5 Pro | chatgpt.com (Pro plan) | Heavy reasoning effort, web search enabled |
+| GPT | OpenAI | GPT-5.5 Thinking, on Pro plan | chatgpt.com (Pro plan) | Heavy reasoning effort, web search enabled |
 | Gemini | Google DeepMind | Latest Pro | gemini.google.com (Pro plan) | Deep Research enabled |
 | Grok | xAI | 4.3 | grok.com (SuperGrok) | Think mode + Web search enabled |
 | DeepSeek | DeepSeek AI | Latest Expert | chat.deepseek.com | Expert + DeepThink + Search enabled |

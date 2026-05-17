@@ -24,7 +24,7 @@ Season 0 is the first run of The AI Open's Portfolio tournament. It's a pre-seas
 | Model | Maker | Version | Configuration |
 |---|---|---|---|
 | Claude | Anthropic | Opus 4.7 | Research + Web search |
-| GPT | OpenAI | 5.5 Pro | Heavy reasoning + Web search |
+| GPT | OpenAI | GPT-5.5 Thinking, on Pro plan | Heavy reasoning + Web search |
 | Gemini | Google DeepMind | Latest Pro | Deep Research |
 | Grok | xAI | 4.3 | Think + Web search |
 | DeepSeek | DeepSeek AI | Latest Expert | DeepThink + Search |

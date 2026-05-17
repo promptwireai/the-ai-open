@@ -39,7 +39,7 @@ Each tournament category maintains its own season history. Folder names embed th
 | Lock-in date | Monday, May 18, 2026, market open (9:30 AM ET) |
 | Season end | Monday, November 23, 2026, market close (4:00 PM ET) |
 | Duration | ~6.5 months |
-| Contestants | Claude (Opus 4.7), GPT (5.5 Pro), Gemini (Pro), Grok (4.3), DeepSeek (Expert) |
+| Contestants | Claude (Opus 4.7), GPT (GPT-5.5 Thinking, on Pro plan), Gemini (Pro), Grok (4.3), DeepSeek (Expert) |
 | Universe | 205 stocks pre-curated as AI super-cycle beneficiaries |
 | Starting capital | $10,000 notional per portfolio |
 | Format | Long-only equity, 10-30 positions, max 15% per name |
