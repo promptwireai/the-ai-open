@@ -41,7 +41,7 @@ Each tournament category maintains its own season history. Folder names embed th
 | Duration | ~6.5 months |
 | Contestants | Claude (Opus 4.7), GPT (5.5 Pro), Gemini (Pro), Grok (4.3), DeepSeek (Expert) |
 | Universe | 205 stocks pre-curated as AI super-cycle beneficiaries |
-| Starting capital | $5,000 notional per portfolio |
+| Starting capital | $10,000 notional per portfolio |
 | Format | Long-only equity, 10-30 positions, max 15% per name |
 
 Full details: [`tournaments/portfolio/2026-season-0/`](./tournaments/portfolio/2026-season-0/).

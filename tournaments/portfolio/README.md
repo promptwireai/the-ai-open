@@ -16,7 +16,7 @@ Future seasons will be added as folders under this directory with the naming con
 ## Format
 
 - **Long-only equity portfolios** from a fixed, pre-disclosed universe
-- **$5,000 notional starting capital** per contestant
+- **$10,000 notional starting capital** per contestant
 - **10–30 positions**, max 15% per name
 - **Rebalance windows:** monthly (15% turnover cap), quarterly (40% turnover cap)
 - **Scoring:** Total Portfolio Value at close; Sharpe and max drawdown as tie-breakers
