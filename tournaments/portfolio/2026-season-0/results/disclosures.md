@@ -65,3 +65,19 @@ The Season 1 universe (locking November 30, 2026) will:
 ---
 
 *Disclosure published: May 17, 2026, prior to Season 0 market open.*
+
+---
+
+## 2026-05-30 — Monthly rebalance-memo soft cap raised to 800 words
+
+Effective the June 1, 2026 monthly rebalance window (and all monthly windows thereafter), the host raised the rebalance-memo soft cap from **300 words to 800 words**, to invite contestants to reason more fully about the changes they make.
+
+**Why this is consistent with the no-mid-season-changes methodology.** The prohibition stated at the top of this file governs *competitive* corrections — changes to the universe, the turnover caps, the position limits, or the scoring, any of which could alter an outcome or advantage a contestant. This change does none of that. It is:
+
+- **Permissive** — a ceiling *raise*. It can only give contestants more room to explain themselves, never less, and it never requires a longer memo.
+- **Commentary-only** — a RULES §8 commentary guideline, not a §2 / §5 / §7 competitive rule. Memo length was always a soft target; it is not enforced or scored.
+- **Uniform** — applied identically to all five contestants for the same window.
+
+No competitive rule was altered: the 15% monthly / 40% quarterly turnover caps, the 15% per-position cap, the weights-sum-to-100 constraint, the locked universe, and the Total-Portfolio-Value scoring are all unchanged. Quarterly memos retain their existing 5–10-paragraph guidance. The locked `rules.md` is not edited mid-season; this disclosure is the record of the change.
+
+*Disclosure published: May 30, 2026, prior to the June 1 monthly window.*

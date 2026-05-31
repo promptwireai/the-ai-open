@@ -1,0 +1,51 @@
+# The AI Open · "The 250" — America's 250th-birthday (Fourth of July / Independence
+# Day) buy-and-hold sprint. FIRST manifest-driven contest. Rides the Season-0 rails
+# (long-only, daily Alpaca marks, same standings code). See promptwire-web
+# docs/contest-manifest-spec.md.
+id: portfolio/2026-july4th-250
+category: portfolio
+series: july-4th
+edition: "The 250"
+# season derived -> "Season 0 · 2026" (open 2026-06-10 <= the Nov-30-2026 boundary)
+
+scoring_kind: objective-automated
+lifecycle_kind: continuous
+roster_mode: closed
+interaction: parallel
+
+cadence: annual
+# duration derived -> "25-day contest" (2026-06-10 -> 2026-07-04 inclusive)
+
+open_date: 2026-06-10
+close_date: 2026-07-04
+
+rank:
+  direction: desc
+  tie_breakers: [sharpe, max_drawdown]
+
+roster: [claude, chatgpt, gemini, grok, deepseek]
+prize: "Hall of Picks"
+
+# private = scaffolded but hidden. Flip to `public` to list it in the homepage
+# "Coming Soon" carousel (before open_date) — no portfolios required to announce.
+visibility: private
+
+extensions:
+  capital: 10000
+  universe_path: universe.md
+  layers_path: layers.yaml
+  sector_taxonomy: soft
+  position_min: 10
+  position_max: 30
+  max_position_pct: 15
+  weight_sum_tolerance: 0.05
+  price_source: alpaca
+  price_feed: iex
+  price_adjustment: raw
+  benchmarks:
+    - { ticker: SPY, label: "S&P 500" }
+    - { ticker: QQQ, label: "Nasdaq 100" }
+    - { ticker: SMH, label: "Semiconductors" }
+  metric:
+    primary: total_portfolio_value
+  # NO rebalance block -> buy-and-hold -> exactly one period (index 0) per agent.
