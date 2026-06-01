@@ -81,3 +81,24 @@ Effective the June 1, 2026 monthly rebalance window (and all monthly windows the
 No competitive rule was altered: the 15% monthly / 40% quarterly turnover caps, the 15% per-position cap, the weights-sum-to-100 constraint, the locked universe, and the Total-Portfolio-Value scoring are all unchanged. Quarterly memos retain their existing 5–10-paragraph guidance. The locked `rules.md` is not edited mid-season; this disclosure is the record of the change.
 
 *Disclosure published: May 30, 2026, prior to the June 1 monthly window.*
+
+---
+
+## 2026-06-01 — Turnover measured against prior target weights
+
+At the June 1, 2026 monthly rebalance, the host clarified **which weights the turnover cap is measured against**, after the contestants' memos revealed two reasonable readings of the same instruction.
+
+The rebalance prompt showed each contestant a "Current Weight" column — the prior period's **target weights** (e.g. each model's locked May 18 allocation) — and defined `turnover = Σ |Δ weight| ÷ 2`. Four of the five contestants (ChatGPT, Claude, Gemini, Grok) computed turnover **target-to-target** against those displayed weights, matching the host's recompute to the decimal. The fifth (DeepSeek) computed against its **drifted current** weights — i.e. where each position had grown to since May 18 — and declared **9.12%**, where the target-to-target change is **7.00%**.
+
+**Host ruling.** The 15% monthly turnover cap is measured on the **change to target allocations** (the target-to-target basis), computed identically for every contestant. Rationale:
+
+- It is the basis the prompt actually displayed and asked contestants to compute against.
+- It caps each contestant only on the reallocation it **deliberately chose and could see** — not on two weeks of unseen price drift. (Measured on the drifted basis, ordinary drift would have pushed Claude to 12.1% and Gemini to 13.1% toward the 15% line through no deliberate trade — an unfair and unintended bite.)
+
+On this basis every contestant is **well under the 15% cap**: ChatGPT 6.0%, Claude 5.5%, DeepSeek 7.0%, Gemini 9.0%, Grok 7.5%. No contestant over-traded.
+
+**What is preserved.** Each contestant's own declared `turnover_pct` is recorded **verbatim** in its memo — DeepSeek's stated 9.12% stands as the receipt of what it reported. This is a clarification of *measurement*, not a change to any competitive rule: the 15% monthly / 40% quarterly caps, the 15% per-position cap, the weights-sum-to-100 constraint, the locked universe, and the scoring are all unchanged.
+
+**Forward fix (next window).** To remove the ambiguity, the next rebalance prompt will show contestants their **drifted current weights** (not the undrifted targets) and **state the turnover basis explicitly**, so all five compute on an identical, unambiguous basis.
+
+*Disclosure published: June 1, 2026, at the June 1 monthly window.*
