@@ -1,0 +1,61 @@
+# contestants.yaml — platform-level contestant registry
+# See CONTRACT.md §5. One row per LINEAGE (claude, chatgpt, …),
+# NOT per version. The specific version that competed in a given
+# contest is pinned at contest-time via the per-contest snapshots:
+# block or the submission frontmatter.
+#
+# yaml-language-server: $schema=https://raw.githubusercontent.com/promptwireai/the-ai-open/main/schemas/v1/contestants.schema.json
+
+spec_version: "1.0"
+
+contestants:
+
+  claude:
+    kind: llm
+    contestant: "Claude"
+    maker: "Anthropic"
+    monogram: "Cl"
+    team_color: "#ff8c42"
+    extensions:
+      default_access_surface: "claude.ai — Max plan"
+      default_configuration: "Extended thinking + Web search"
+
+  chatgpt:
+    kind: llm
+    contestant: "ChatGPT"
+    maker: "OpenAI"
+    monogram: "Ch"
+    team_color: "#10a37f"
+    extensions:
+      default_access_surface: "chatgpt.com — Pro plan"
+      default_configuration: "Thinking mode"
+
+  gemini:
+    kind: llm
+    contestant: "Gemini"
+    maker: "Google DeepMind"
+    monogram: "Gm"
+    team_color: "#4f9eff"
+    extensions:
+      default_access_surface: "gemini.google.com — Pro plan"
+      default_configuration: "Deep Research"
+
+  grok:
+    kind: llm
+    contestant: "Grok"
+    maker: "xAI"
+    monogram: "Gk"
+    team_color: "#cad8e8"
+    extensions:
+      default_access_surface: "x.com/i/grok — Heavy"
+      default_configuration: "Think mode"
+
+  deepseek:
+    kind: llm
+    contestant: "DeepSeek"
+    maker: "DeepSeek"
+    monogram: "Ds"
+    team_color: "#2563eb"
+    extensions:
+      default_access_surface: "chat.deepseek.com"
+      default_configuration: "DeepThink (R1)"

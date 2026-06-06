@@ -1,0 +1,568 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/promptwireai/the-ai-open/main/schemas/v1/contest-manifest.schema.json",
+  "title": "The Contest Contract — contest.yaml manifest",
+  "description": "v1.0. The shell of one contest. See CONTRACT.md at the repo root for the full human spec; this schema is the machine contract derived from it. Strict mode: additionalProperties is false at every level. Receipts (holdings/weights/rationales/thesis) live in submissions/*.md, NEVER in this file.",
+
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "spec_version",
+    "id",
+    "category",
+    "edition",
+    "scoring_kind",
+    "lifecycle_kind",
+    "cadence",
+    "open_date",
+    "close_date"
+  ],
+
+  "properties": {
+
+    "spec_version": {
+      "description": "Which version of the Contest Contract this manifest is authored against. The validator-selection key.",
+      "const": "1.0"
+    },
+
+    "id": {
+      "description": "Stable PK + repo path + URL fragment. Must equal the manifest's own directory (contests/{id}/).",
+      "type": "string",
+      "pattern": "^[a-z0-9-]+/\\d{4}-[a-z0-9-]+$",
+      "examples": ["portfolio/2026-july4-250", "portfolio/2026-season-0"]
+    },
+
+    "category": {
+      "description": "The category discriminant — selects scorer + extensions schema. v1.0 ships portfolio only; others are reserved.",
+      "type": "string",
+      "enum": ["portfolio", "song", "code", "forecast"],
+      "x-status": {
+        "portfolio": "built",
+        "song": "reserved",
+        "code": "reserved",
+        "forecast": "reserved"
+      }
+    },
+
+    "series": {
+      "description": "The repeatable FORMAT slug that carries year-over-year records (july-4, portfolio-foundations). null only for a sealed one-off. Must stay consistent with cadence.",
+      "oneOf": [
+        { "type": "string", "pattern": "^[a-z0-9-]+$" },
+        { "type": "null" }
+      ],
+      "default": null
+    },
+
+    "edition": {
+      "description": "The run's display name. Free text.",
+      "type": "string",
+      "minLength": 1,
+      "examples": ["The Foundations Run", "The 250"]
+    },
+
+    "season": {
+      "description": "DERIVED from open_date vs the Nov-30 platform epoch. OMIT this field unless the derived season disagrees with the editorial filing — the rare reset-straddle override.",
+      "type": "integer",
+      "minimum": 0
+    },
+
+    "scoring_kind": {
+      "description": "How winners are determined. v1.0 ships objective-automated only; others validate but their scorers are reserved.",
+      "type": "string",
+      "enum": ["objective-automated", "objective-manual", "subjective-vote", "subjective-panel", "hybrid"],
+      "x-status": {
+        "objective-automated": "built",
+        "objective-manual": "reserved",
+        "subjective-vote": "reserved",
+        "subjective-panel": "reserved",
+        "hybrid": "reserved"
+      }
+    },
+
+    "lifecycle_kind": {
+      "description": "The shape of competition over time. v1.0 ships continuous only. 'recurring' is NOT a value here — recurrence lives in series + cadence.",
+      "type": "string",
+      "enum": ["continuous", "episodic", "realtime"],
+      "x-status": {
+        "continuous": "built",
+        "episodic": "reserved",
+        "realtime": "reserved"
+      }
+    },
+
+    "roster_mode": {
+      "description": "Where competitors come from. closed = named up front. open = entrants arrive via submissions. products = curated SaaS/products.",
+      "type": "string",
+      "enum": ["closed", "open", "products"],
+      "default": "closed",
+      "x-status": {
+        "closed": "built",
+        "open": "reserved",
+        "products": "reserved"
+      }
+    },
+
+    "interaction": {
+      "description": "Do competitors affect each other? parallel = independent same-conditions. adversarial = head-to-head play.",
+      "type": "string",
+      "enum": ["parallel", "adversarial"],
+      "default": "parallel",
+      "x-status": {
+        "parallel": "built",
+        "adversarial": "reserved"
+      }
+    },
+
+    "cadence": {
+      "description": "Does the format repeat, and how often? one-off pairs with series:null; any repeating cadence pairs with a non-null series.",
+      "type": "string",
+      "enum": ["one-off", "annual", "monthly", "weekly", "daily"]
+    },
+
+    "open_date": {
+      "description": "The buy/start date. Governs season derivation. The day-0 baseline.",
+      "type": "string",
+      "format": "date"
+    },
+
+    "close_date": {
+      "description": "The end date. Must be >= open_date (runtime-validated). Drives duration and the progress bar — both derived.",
+      "type": "string",
+      "format": "date"
+    },
+
+    "submission_window_close": {
+      "description": "Author ONLY for lifecycle_kind: episodic (where it is required). Omit for every other contest.",
+      "type": "string",
+      "format": "date"
+    },
+
+    "voting_window_open": {
+      "description": "Reserved. Author only for a subjective/hybrid scoring_kind. null for objective contests.",
+      "oneOf": [
+        { "type": "string", "format": "date" },
+        { "type": "null" }
+      ],
+      "default": null
+    },
+
+    "voting_window_close": {
+      "description": "Reserved. Pairs with voting_window_open under the same rules.",
+      "oneOf": [
+        { "type": "string", "format": "date" },
+        { "type": "null" }
+      ],
+      "default": null
+    },
+
+    "rank": {
+      "description": "The cross-cutting ranking contract — the shared leaderboard reads it generically.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "direction": {
+          "description": "Sort order of the score. desc = higher wins. asc = lower wins (e.g. a Brier score).",
+          "type": "string",
+          "enum": ["asc", "desc"],
+          "default": "desc"
+        },
+        "tie_breakers": {
+          "description": "Ordered fallback keys on a tie. Token set is category-specific — portfolio accepts only sharpe and max_drawdown (enforced in the category-conditional branch).",
+          "type": "array",
+          "items": { "type": "string" },
+          "default": []
+        }
+      }
+    },
+
+    "roster": {
+      "description": "Competitors by contestant-id (FKs into contestants.yaml). Required non-empty for closed/products; must be empty for open.",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9-]+$"
+      },
+      "default": []
+    },
+
+    "snapshots": {
+      "description": "Per-contestant version metadata. Omit if the submission _TEMPLATE.md frontmatter already carries normalized version/model_string keys. Otherwise write one entry per roster id.",
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["version", "model_string"],
+        "properties": {
+          "version": { "type": "string", "minLength": 1 },
+          "model_string": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+
+    "prize": {
+      "description": "Display-only prize name (\"Hall of Picks\"). Reserved.",
+      "oneOf": [
+        { "type": "string", "minLength": 1 },
+        { "type": "null" }
+      ],
+      "default": null
+    },
+
+    "visibility": {
+      "description": "The only authored state knob. private = admin preview only. public = listed publicly (the live/coming-soon/closed state then derives from dates).",
+      "type": "string",
+      "enum": ["private", "public"],
+      "default": "private"
+    },
+
+    "extensions": {
+      "description": "Category-specific block. Shape is determined by `category` (see the allOf branches below).",
+      "type": "object"
+    }
+  },
+
+  "allOf": [
+
+    {
+      "$comment": "§9.5 / §11 — voting requires subjective scoring",
+      "if": {
+        "anyOf": [
+          { "properties": { "voting_window_open": { "type": "string" } }, "required": ["voting_window_open"] },
+          { "properties": { "voting_window_close": { "type": "string" } }, "required": ["voting_window_close"] }
+        ]
+      },
+      "then": {
+        "properties": {
+          "scoring_kind": {
+            "enum": ["subjective-vote", "subjective-panel", "hybrid"]
+          }
+        }
+      }
+    },
+
+    {
+      "$comment": "§9.5 / §11 — subjective scoring requires voting window",
+      "if": {
+        "properties": {
+          "scoring_kind": { "enum": ["subjective-vote", "subjective-panel", "hybrid"] }
+        },
+        "required": ["scoring_kind"]
+      },
+      "then": {
+        "required": ["voting_window_open", "voting_window_close"],
+        "properties": {
+          "voting_window_open": { "type": "string", "format": "date" },
+          "voting_window_close": { "type": "string", "format": "date" }
+        }
+      }
+    },
+
+    {
+      "$comment": "§9.5 / §11 — adversarial contests cannot be price-scored",
+      "if": {
+        "properties": { "interaction": { "const": "adversarial" } },
+        "required": ["interaction"]
+      },
+      "then": {
+        "properties": {
+          "scoring_kind": { "not": { "const": "objective-automated" } }
+        }
+      }
+    },
+
+    {
+      "$comment": "§9.5 / §11 — episodic lifecycle requires submission_window_close",
+      "if": {
+        "properties": { "lifecycle_kind": { "const": "episodic" } },
+        "required": ["lifecycle_kind"]
+      },
+      "then": {
+        "required": ["submission_window_close"]
+      }
+    },
+
+    {
+      "$comment": "§9.5 / §11 — open roster must be empty",
+      "if": {
+        "properties": { "roster_mode": { "const": "open" } },
+        "required": ["roster_mode"]
+      },
+      "then": {
+        "properties": { "roster": { "maxItems": 0 } }
+      }
+    },
+
+    {
+      "$comment": "§9.5 / §11 — closed and products rosters must be non-empty",
+      "if": {
+        "properties": {
+          "roster_mode": { "enum": ["closed", "products"] }
+        },
+        "required": ["roster_mode"]
+      },
+      "then": {
+        "required": ["roster"],
+        "properties": { "roster": { "minItems": 1 } }
+      }
+    },
+
+    {
+      "$comment": "§11 — series + cadence must agree (one-off iff series:null)",
+      "if": {
+        "properties": { "cadence": { "const": "one-off" } },
+        "required": ["cadence"]
+      },
+      "then": {
+        "properties": { "series": { "type": "null" } }
+      }
+    },
+
+    {
+      "$comment": "§11 — series + cadence must agree (repeating cadence requires non-null series)",
+      "if": {
+        "properties": {
+          "cadence": { "enum": ["annual", "monthly", "weekly", "daily"] }
+        },
+        "required": ["cadence"]
+      },
+      "then": {
+        "properties": {
+          "series": { "type": "string", "pattern": "^[a-z0-9-]+$" }
+        }
+      }
+    },
+
+    {
+      "$comment": "§6 — category-conditional extensions: portfolio",
+      "if": {
+        "properties": { "category": { "const": "portfolio" } },
+        "required": ["category"]
+      },
+      "then": {
+        "required": ["extensions"],
+        "properties": {
+          "extensions": { "$ref": "#/$defs/portfolioExtensions" },
+          "rank": {
+            "properties": {
+              "tie_breakers": {
+                "items": { "enum": ["sharpe", "max_drawdown"] }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    {
+      "$comment": "Reserved — category-conditional extensions: song. Placeholder; fields firm up the first time a song contest enters planning.",
+      "if": {
+        "properties": { "category": { "const": "song" } },
+        "required": ["category"]
+      },
+      "then": {
+        "required": ["extensions"],
+        "properties": {
+          "extensions": { "$ref": "#/$defs/songExtensions" }
+        }
+      }
+    }
+
+  ],
+
+  "$defs": {
+
+    "portfolioExtensions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["capital", "position_min", "position_max", "max_position_pct", "metric"],
+      "properties": {
+
+        "capital": {
+          "description": "Paper dollars per portfolio. Must equal the figure in rules.md. Every contest so far is 10000; a non-10000 value is accepted but loud-warned.",
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+
+        "universe_path": {
+          "description": "Relative filename of the tradable list.",
+          "type": "string",
+          "default": "universe.md"
+        },
+
+        "layers_path": {
+          "description": "Relative filename of the per-contest layer taxonomy.",
+          "type": "string",
+          "default": "layers.yaml"
+        },
+
+        "sector_taxonomy": {
+          "description": "Controls the universe's optional Sector column. soft = universe.md has a Sector column feeding the advisory buckets. none = no Sector column.",
+          "type": "string",
+          "enum": ["soft", "none"],
+          "default": "soft"
+        },
+
+        "universe_size": {
+          "description": "Optional checksum. If set, the loader asserts this equals the parsed Ticker-row count of universe.md.",
+          "type": "integer",
+          "minimum": 1
+        },
+
+        "position_min": {
+          "description": "Minimum number of names a portfolio may hold.",
+          "type": "integer",
+          "minimum": 1
+        },
+
+        "position_max": {
+          "description": "Maximum number of names. Must be >= position_min (runtime-validated).",
+          "type": "integer",
+          "minimum": 1
+        },
+
+        "max_position_pct": {
+          "description": "Single-position weight cap, in percent.",
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 100
+        },
+
+        "weight_sum_tolerance": {
+          "description": "Sigma of holding weights must equal 100.0 plus or minus this.",
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 1,
+          "default": 0.05
+        },
+
+        "price_source": {
+          "description": "Market-data provider. alpaca is the only legal value today.",
+          "type": "string",
+          "enum": ["alpaca"],
+          "default": "alpaca"
+        },
+
+        "price_feed": {
+          "description": "iex = the free IEX feed. sip = the consolidated/paid feed.",
+          "type": "string",
+          "enum": ["iex", "sip"],
+          "default": "iex"
+        },
+
+        "price_adjustment": {
+          "description": "raw = unadjusted closes. split_div = split/dividend-adjusted (requires the adjusted pipeline).",
+          "type": "string",
+          "enum": ["raw", "split_div"],
+          "default": "raw"
+        },
+
+        "benchmarks": {
+          "description": "Vs-the-market context lines. Do NOT affect rank.",
+          "type": "array",
+          "items": { "$ref": "#/$defs/benchmarkEntry" },
+          "default": []
+        },
+
+        "metric": {
+          "description": "Declares WHAT is scored. rank.direction (top level) declares HOW to order it.",
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["primary"],
+          "properties": {
+            "primary": {
+              "description": "Closed literal — total_portfolio_value is the only accepted value today.",
+              "type": "string",
+              "enum": ["total_portfolio_value"]
+            }
+          }
+        },
+
+        "clarifications_path": {
+          "description": "Optional relative path to a results/clarifications.md (e.g. reasoning-time data).",
+          "type": "string"
+        },
+
+        "rebalance": {
+          "description": "Turnover windows. ABSENT = buy-and-hold = exactly one period (index 0) per contestant.",
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["schedule", "caps"],
+          "properties": {
+            "schedule": {
+              "description": "Ordered list of rebalance events. Each date must satisfy open_date < date <= close_date and the list must be strictly ascending (runtime-validated).",
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["date", "kind"],
+                "properties": {
+                  "date": { "type": "string", "format": "date" },
+                  "kind": { "type": "string", "enum": ["monthly", "quarterly", "annual"] }
+                }
+              }
+            },
+            "caps": {
+              "description": "Turnover cap per RebalanceKind. Keys are monthly|quarterly|annual.",
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "monthly": { "$ref": "#/$defs/turnoverCapEntry" },
+                "quarterly": { "$ref": "#/$defs/turnoverCapEntry" },
+                "annual": { "$ref": "#/$defs/turnoverCapEntry" }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "benchmarkEntry": {
+      "oneOf": [
+        {
+          "description": "Real, priced ticker benchmark.",
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["ticker", "label"],
+          "properties": {
+            "ticker": {
+              "type": "string",
+              "pattern": "^[A-Z0-9.-]{1,8}$"
+            },
+            "label": { "type": "string", "minLength": 1 }
+          }
+        },
+        {
+          "description": "Display-only synthetic benchmark (never priced, never ranked).",
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["synthetic", "label", "priced"],
+          "properties": {
+            "synthetic": { "const": "consensus" },
+            "label": { "type": "string", "minLength": 1 },
+            "priced": { "const": false }
+          }
+        }
+      ]
+    },
+
+    "turnoverCapEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["turnover_cap"],
+      "properties": {
+        "turnover_cap": {
+          "description": "Maximum percentage of portfolio value that may turn over at this rebalance tier.",
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 100
+        }
+      }
+    },
+
+    "songExtensions": {
+      "$comment": "Reserved — placeholder. Real fields land when a song contest enters planning. Kept loose for now (allows future fields without a schema break).",
+      "type": "object"
+    }
+  }
+}

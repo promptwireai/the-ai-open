@@ -1,0 +1,177 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/promptwireai/the-ai-open/main/schemas/v1/contestants.schema.json",
+  "title": "The Contest Contract — contestants.yaml registry",
+  "description": "v1.0. Platform-level registry of competitor lineages. A row is a LINEAGE (claude, suno) — not a specific version. The version that competed in a given contest is pinned at contest-time via the per-contest snapshots: block or the submission frontmatter, not here. See CONTRACT.md §5.",
+
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["spec_version", "contestants"],
+
+  "properties": {
+
+    "spec_version": {
+      "description": "Which version of the Contest Contract this registry is authored against.",
+      "const": "1.0"
+    },
+
+    "contestants": {
+      "description": "Map keyed by contestant-id. Direct FK lookup from a contest manifest's roster:[..]. Duplicate ids are structurally impossible (object keys).",
+      "type": "object",
+      "propertyNames": {
+        "description": "Contestant ids are stable slugs.",
+        "pattern": "^[a-z0-9-]+$"
+      },
+      "additionalProperties": { "$ref": "#/$defs/contestantEntry" }
+    }
+  },
+
+  "$defs": {
+
+    "contestantEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "contestant", "maker", "monogram", "team_color"],
+
+      "properties": {
+
+        "kind": {
+          "description": "The contestant-kind discriminant. v1.0 ships llm only; others are reserved.",
+          "type": "string",
+          "enum": ["llm", "saas-product", "robot", "team"],
+          "x-status": {
+            "llm": "built",
+            "saas-product": "reserved",
+            "robot": "reserved",
+            "team": "reserved"
+          }
+        },
+
+        "contestant": {
+          "description": "Display name (\"Claude\", \"Suno\").",
+          "type": "string",
+          "minLength": 1
+        },
+
+        "maker": {
+          "description": "Organization that owns the lineage (\"Anthropic\", \"Suno, Inc.\").",
+          "type": "string",
+          "minLength": 1
+        },
+
+        "monogram": {
+          "description": "Two-character glyph for the team tile (\"Cl\"). Used everywhere a model logo would normally appear.",
+          "type": "string",
+          "pattern": "^[A-Za-z0-9]{2}$"
+        },
+
+        "team_color": {
+          "description": "Hex color used for cards, sparklines, badges. Must be a 6-digit hex.",
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$"
+        },
+
+        "extensions": {
+          "description": "Kind-specific block. Shape is determined by `kind` (see the allOf branches below).",
+          "type": "object"
+        }
+      },
+
+      "allOf": [
+
+        {
+          "$comment": "kind: llm extensions",
+          "if": {
+            "properties": { "kind": { "const": "llm" } },
+            "required": ["kind"]
+          },
+          "then": {
+            "properties": {
+              "extensions": { "$ref": "#/$defs/llmExtensions" }
+            }
+          }
+        },
+
+        {
+          "$comment": "kind: saas-product extensions (reserved)",
+          "if": {
+            "properties": { "kind": { "const": "saas-product" } },
+            "required": ["kind"]
+          },
+          "then": {
+            "properties": {
+              "extensions": { "$ref": "#/$defs/saasProductExtensions" }
+            }
+          }
+        },
+
+        {
+          "$comment": "kind: robot extensions (reserved — placeholder, schema admits the kind)",
+          "if": {
+            "properties": { "kind": { "const": "robot" } },
+            "required": ["kind"]
+          },
+          "then": {
+            "properties": {
+              "extensions": { "$ref": "#/$defs/robotExtensions" }
+            }
+          }
+        },
+
+        {
+          "$comment": "kind: team extensions (reserved — placeholder)",
+          "if": {
+            "properties": { "kind": { "const": "team" } },
+            "required": ["kind"]
+          },
+          "then": {
+            "properties": {
+              "extensions": { "$ref": "#/$defs/teamExtensions" }
+            }
+          }
+        }
+      ]
+    },
+
+    "llmExtensions": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "default_access_surface": {
+          "description": "Default surface this lineage competes on (\"claude.ai — Max plan\"). Per-contest overrides allowed in submission frontmatter.",
+          "type": "string"
+        },
+        "default_configuration": {
+          "description": "Default mode/tools (\"Extended thinking + Web search\"). Per-contest overrides allowed.",
+          "type": "string"
+        }
+      }
+    },
+
+    "saasProductExtensions": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "product_url": {
+          "description": "The product's public URL.",
+          "type": "string",
+          "format": "uri"
+        },
+        "default_plan_tier": {
+          "description": "Plan/tier the product is competing on (\"Pro\", \"Enterprise\").",
+          "type": "string"
+        }
+      }
+    },
+
+    "robotExtensions": {
+      "$comment": "Reserved — placeholder. Real fields land when a robot contest enters planning. Kept loose for now (allows future fields without a schema break).",
+      "type": "object"
+    },
+
+    "teamExtensions": {
+      "$comment": "Reserved — placeholder. Real fields land when a team contest enters planning.",
+      "type": "object"
+    }
+  }
+}
