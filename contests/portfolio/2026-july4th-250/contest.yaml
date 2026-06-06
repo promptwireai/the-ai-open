@@ -2,6 +2,7 @@
 # Day) buy-and-hold sprint. FIRST manifest-driven contest. Rides the Season-0 rails
 # (long-only, daily Alpaca marks, same standings code). See promptwire-web
 # docs/contest-manifest-spec.md.
+spec_version: "1.0"
 id: portfolio/2026-july4th-250
 category: portfolio
 series: july-4th

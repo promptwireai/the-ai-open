@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/promptwireai/the-ai-open/main/schemas/v1/submission-frontmatter.schema.json",
+  "title": "The Contest Contract — submission frontmatter",
+  "description": "v1.0. YAML frontmatter contract for contests/{id}/submissions/*.md files. Validates the file→contestant join key plus the snapshot pinning. The verbatim body (Portfolio Name · Thesis · Holdings · Risk Ack · Construction Memo · Self-ID) is parsed by the loader against the submission-body shape documented in CONTRACT.md §7 — not by this schema. See CONTRACT.md §7.",
+
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["contestant_id", "version", "model_string"],
+
+  "properties": {
+
+    "contestant_id": {
+      "description": "The bare contestant-id this submission is from (claude, chatgpt, …). REQUIRED. This is the file→contestant join; the loader never infers the contestant from the filename. Must reference an id present in contestants.yaml (runtime-validated).",
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$"
+    },
+
+    "version": {
+      "description": "Normalized display snapshot of the version that competed in this contest (\"Opus 4.8\", \"3 Pro\"). REQUIRED. Pins what version this submission represents — the lineage row in contestants.yaml is stable across versions.",
+      "type": "string",
+      "minLength": 1
+    },
+
+    "model_string": {
+      "description": "Forensic API model id (\"claude-opus-4-8\"). REQUIRED. For an LLM, the exact API string. For a SaaS product, the product version string. For any kind, whatever uniquely pins the snapshot.",
+      "type": "string",
+      "minLength": 1
+    },
+
+    "reasoning_time": {
+      "description": "Wall-clock time the contestant spent reasoning. Optional — null if not captured or not applicable.",
+      "oneOf": [
+        { "type": "string", "minLength": 1, "examples": ["14m 46s", "1m 24s"] },
+        { "type": "null" }
+      ]
+    },
+
+    "contestant": {
+      "description": "Display name. Descriptive duplicate of the registry value — present for human readers; the loader takes contestants.yaml as authoritative.",
+      "type": "string",
+      "minLength": 1
+    },
+
+    "maker": {
+      "description": "Organization that owns the lineage. Descriptive duplicate of the registry value.",
+      "type": "string",
+      "minLength": 1
+    },
+
+    "access_surface": {
+      "description": "Where the contestant was being used for THIS contest. Per-contest override of contestants.yaml's default_access_surface (LLM kind) or default equivalent (other kinds).",
+      "type": "string"
+    },
+
+    "configuration": {
+      "description": "The mode/tools active for THIS contest (\"Extended thinking + Web search\"). Per-contest override of the registry default.",
+      "type": "string"
+    },
+
+    "submitted_at": {
+      "description": "ISO 8601 timestamp the submission was received from the contestant. Receipt — establishes the host's possession time.",
+      "type": "string",
+      "format": "date-time"
+    },
+
+    "host": {
+      "description": "The hosting entity. \"Promptwire\" for The AI Open contests.",
+      "type": "string"
+    }
+  }
+}
