@@ -104,7 +104,7 @@ Construct your portfolio now. Remember: every judgment call is yours — do not 
 
 ## Notes for repository readers
 
-- **Prompt locked:** [fill in at lock]
+- **Prompt locked:** 2026‑06‑10T02:21:00‑04:00
 - **Sent to contestants:** [target: Saturday, June 6, 2026]
 - **Lock-in:** Wednesday, June 10, 2026, market open (9:30 AM ET)
 - **Close:** Saturday, July 4, 2026, market close

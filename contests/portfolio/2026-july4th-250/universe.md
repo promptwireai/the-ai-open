@@ -1,7 +1,7 @@
 # The 250 — Universe
 
 **Total: 250 stocks across 9 pools.** America's 250th-birthday universe — American-founded or ~100% US-workforce, plus on-brand-ticker flavor picks.
-**Locked:** [fill in at lock]. Parser-load-bearing columns: **Ticker** (col 1) + **Layer** (col 4); Company/Sector/Qual are advisory.
+**Locked:** 2026‑06‑10T02:21:00‑04:00. Parser-load-bearing columns: **Ticker** (col 1) + **Layer** (col 4); Company/Sector/Qual are advisory.
 
 ---
 

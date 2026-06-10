@@ -80,4 +80,4 @@ Rule ambiguities and data errors are documented in `results/disclosures.md`, res
 
 ---
 
-*Rules locked: [fill in at lock]*
+*Rules locked: 2026‑06‑10T02:21:00‑04:00*
