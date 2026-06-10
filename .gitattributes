@@ -1,0 +1,33 @@
+# Normalize line endings across the repo.
+# Store text as LF in git history and check it out as LF on every platform,
+# so Windows editors stop producing CRLF churn ("phantom-modified" files).
+# A one-time `git add --renormalize .` was run when this file was introduced.
+* text=auto eol=lf
+
+# Keep known text types explicit (belt-and-suspenders).
+*.md      text eol=lf
+*.markdown text eol=lf
+*.yaml    text eol=lf
+*.yml     text eol=lf
+*.json    text eol=lf
+*.csv     text eol=lf
+*.py      text eol=lf
+*.txt     text eol=lf
+*.toml    text eol=lf
+*.cfg     text eol=lf
+*.ini     text eol=lf
+*.sh      text eol=lf
+
+# Defensive binary markers — none exist today, but future-proof the record
+# so an added image/pdf/font is never line-ending mangled.
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.gif   binary
+*.webp  binary
+*.ico   binary
+*.pdf   binary
+*.mp4   binary
+*.zip   binary
+*.woff  binary
+*.woff2 binary
