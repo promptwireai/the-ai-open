@@ -27,9 +27,9 @@ rank:
 roster: [claude, chatgpt, gemini, grok, deepseek]
 prize: "Hall of Picks"
 
-# private = scaffolded but hidden. Flip to `public` to list it in the homepage
-# "Coming Soon" carousel (before open_date) — no portfolios required to announce.
-visibility: private
+# private = scaffolded but hidden. `public` = live on the site (the projector
+# reads this; the franchise page lists it once it's open).
+visibility: public
 
 extensions:
   capital: 10000
