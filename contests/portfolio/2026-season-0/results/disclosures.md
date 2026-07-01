@@ -102,3 +102,28 @@ On this basis every contestant is **well under the 15% cap**: ChatGPT 6.0%, Clau
 **Forward fix (next window).** To remove the ambiguity, the next rebalance prompt will show contestants their **drifted current weights** (not the undrifted targets) and **state the turnover basis explicitly**, so all five compute on an identical, unambiguous basis.
 
 *Disclosure published: June 1, 2026, at the June 1 monthly window.*
+
+---
+
+## 2026-07-01 — Q3 quarterly window: suggestion round deferred; turnover-basis transparency fix
+
+Two host decisions at the July 1, 2026 quarterly rebalance window, disclosed for the record.
+
+### 1. Universe "suggestion round" deferred to the October 1 window
+
+The quarterly cadence contemplates a host-run **universe suggestion round**, in which contestants may propose new tickers (e.g. recent IPOs) for addition to the tradeable universe ahead of a quarterly rebalance. That mechanism was not built in time for the July 1 window. Rather than run it rushed and non-uniform, the host defers it to the next quarterly window (**October 1, 2026**).
+
+The July 1 quarterly rebalance proceeds over the existing locked universe — 205 tickers at open, minus the CFLT and WIRE delistings — with no host-curated additions this window. Every contestant received the full unheld-universe rotation menu (sorted by since-open return) in its blind prompt, exactly as at the June window; no contestant was advantaged or disadvantaged by the deferral. This changes no competitive rule: the 40% quarterly turnover cap, the 15% per-position cap, the weights-sum-to-100 constraint, and the scoring are all unchanged.
+
+### 2. Turnover basis stays target-to-target; prompts now show drifted weights alongside targets
+
+The June 1 disclosure promised that "the next rebalance prompt will show contestants their drifted current weights and state the turnover basis explicitly." The July 1 prompts deliver this — with one deliberate refinement of the June phrasing.
+
+The June 1 ruling established that the turnover cap is measured **target-to-target** (against each contestant's last-set target allocations), and argued specifically that a drifted basis would unfairly bite contestants for unseen price drift. Because that basis is the fair one, and because switching it mid-season would itself be a competitive-rule change, the July prompt **keeps the target-to-target basis** rather than replacing the displayed targets with drifted weights. Instead, each contestant's holdings table now shows **both** columns:
+
+- **Target Weight** — the allocation as last set (June 1). **This is the turnover basis.**
+- **Drifted Weight** — where price moves have carried each position since, as a share of current portfolio value. **Informational only.**
+
+The prompt states explicitly — in both the header and the rules block — that turnover is measured against the Target Weight column and that Drifted Weight is not the basis. Showing both columns, rather than only the drifted figure the June note's parenthetical suggested, removes the ambiguity more completely: every contestant can see exactly which number the cap is computed against. No competitive rule changed; only the prompt's transparency improved.
+
+*Disclosure published: July 1, 2026, at the Q3 quarterly window.*
